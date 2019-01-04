@@ -48,7 +48,7 @@
 
         // clear sreen
 
-        setInterval(clearscreen, 50)
+        setInterval(clearscreen, 60)
 
         function clearscreen() {
             ctx.canvas.width = window.innerWidth;
@@ -109,8 +109,8 @@
             console.log("bird    x : " + bird.x + " y : " + bird.y)
             drawbal(bird.x, bird.y, 20, '#f4d941')
             if (click) {
-                if (bird.my > -2) {
-                    bird.my -= 2
+                if (bird.my > -1) {
+                    bird.my -= 1
                 }
             } else {
                 bird.my += 3
