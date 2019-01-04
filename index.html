@@ -109,8 +109,8 @@
             console.log("bird    x : " + bird.x + " y : " + bird.y)
             drawbal(bird.x, bird.y, 20, '#f4d941')
             if (click) {
-                if (bird.my > -1) {
-                    bird.my -= 1
+                if (bird.my > -15) {
+                    bird.my -= 15
                 }
             } else {
                 bird.my += 3
