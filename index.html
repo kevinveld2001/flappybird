@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>flappybird</title>
+</head>
+
+<body>
+    <style>
+        #ctx {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+        #img{
+            position: absolute;
+            left:0px;
+            top:0px;
+            width:10px;
+            height:10px;
+            
+        }
+    </style>
+<img id="img"src="bird.png" alt="bird">
+    <!-- canvas ctx -->
+
+    <canvas id="ctx" onclick="click()"></canvas>
+
+    <script>
+        //main
+        var ctx = document.getElementById("ctx").getContext("2d");
+        ctx.font = '30px Arial'
+        var screenw
+        var screenh
+        var bird = {
+            x: 200,
+            y: window.innerHeight / 2,
+            mx: 0,
+            my: 0,
+        }
+        pieplist = []
+        //end main
+
+        // clear sreen
+
+        setInterval(clearscreen, 100)
+
+        function clearscreen() {
+            ctx.canvas.width = window.innerWidth;
+            ctx.canvas.height = window.innerHeight;
+            var screenw = window.innerWidth
+            var screenh = window.innerHeight
+            ctx.clearRect(0, 0, screenw, screenh);
+            ctx.fillStyle = '#4286f4'
+            ctx.fillRect(0, 0, screenw, screenh)
+
+            move()
+
+
+        }
+        //end clear sreen
+
+
+
+        function drawbal(x, y, s, color) {
+
+            ctx.fillStyle = color
+            var img = document.getElementById("img")
+            ctx.drawImage(img, x- 20,y - 20, 40, 40);
+
+        }
+        var click = false
+
+        document.onmousedown = function () {
+            click = true
+
+        }
+        document.onmouseup = function () {
+            click = false
+
+        }
+        var src = document.getElementById("ctx");
+
+
+        src.addEventListener('touchstart', function (e) {
+
+            click = true
+        }, false);
+        src.addEventListener('touchend', function (e) {
+            click = false
+        }, false);
+
+        function move() {
+
+
+            console.log("bird    x : " + bird.x + " y : " + bird.y)
+            drawbal(bird.x, bird.y, 20, '#f4d941')
+            if (click) {
+                if (bird.my > -10) {
+                    bird.my -= 15
+                }
+            } else {
+                bird.my += 3
+            }
+            bird.y += bird.my
+
+
+            //colition grond 
+
+            if (bird.y > window.innerHeight || bird.y < 0) {
+
+                bird.y = window.innerHeight / 2
+                bird.my = 0
+            }
+
+            //piep
+
+            for (a = 0; a < pieplist.length; a++) {
+                ctx.fillStyle = '#22e826'
+                ctx.fillRect(pieplist[a].x, pieplist[a].y, 40, pieplist[a].height)
+                pieplist[a].x -= 8
+
+                    if (pieplist[a].x < -10 ){
+                        pieplist.shift()
+                    }
+
+                if (bird.x > pieplist[a].x && bird.x < pieplist[a].x + 40) {
+                    console.log('in rage')
+                    if (bird.y > pieplist[a].y && bird.y < (pieplist[a].y + pieplist[a].height)) {
+                        console.log ("hit")
+                         bird.y = window.innerHeight / 2
+                        bird.my = 0
+                    }
+
+                }
+
+
+            }
+
+
+
+        }
+
+
+        setInterval(newpiep, 8000)
+        newpiep()
+
+        function newpiep() {
+            var h = window.innerHeight - 250 - Math.random() * window.innerHeight
+
+            var smal = true
+            while (smal) {
+                if (h < 210) {
+                    h = window.innerHeight - 250 - Math.random() * window.innerHeight
+                } else {
+                    smal = false
+                }
+
+            }
+
+
+            var piep = {
+                x: window.innerWidth,
+                y: 0,
+                height: h
+            }
+            var piep2 = {
+                x: window.innerWidth,
+                y: h + 250,
+                height: window.innerHeight
+            }
+            pieplist.push(piep)
+            pieplist.push(piep2)
+        }
+    </script>
+</body>
+
+</html>
